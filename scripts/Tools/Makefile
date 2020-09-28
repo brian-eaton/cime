@@ -30,8 +30,6 @@ CP    := cp
 exec_se: $(EXEC_SE)  Depends
 complib: $(COMPLIB)  Depends
 
-CAM_DYCORE ?= $(shell $(CASEROOT)/xmlquery --caseroot $(CASEROOT) CAM_DYCORE --value)
-
 # Determine whether to compile threaded or not
 # Set the THREADDIR for the shared build
 # based on the threaded build status
@@ -570,14 +568,13 @@ ifeq ($(findstring -cosp,$(CAM_CONFIG_OPTS)),-cosp)
 endif
 
 COMP_ATM ?= $(shell $(CASEROOT)/xmlquery --caseroot $(CASEROOT) COMP_ATM --value)
+CAM_DYCORE ?= $(shell $(CASEROOT)/xmlquery --caseroot $(CASEROOT) CAM_DYCORE --value)
 ifeq ($(strip $(COMP_ATM)),cam)
-  CAM_DYCORE ?= $(shell $(CASEROOT)/xmlquery --caseroot $(CASEROOT) CAM_DYCORE --value)
   ifeq ($(CAM_DYCORE),fv3)
     FV3CORE_LIBDIR:=$(abspath $(EXEROOT)/atm/obj/atmos_cubed_sphere)
     INCLDIR+=-I$(FV3CORE_LIBDIR) -I$(FV3CORE_LIBDIR)/../ -I../$(INSTALL_SHAREDPATH)/include -I../$(CSM_SHR_INCLUDE) -I$(abspath $(EXEROOT)/FMS) -I$(CIMEROOT)/../libraries/FMS/src/include
   endif
 endif
-
 
 ifeq ($(CAM_DYCORE),mpas)
 MPAS_LIBDIR:=$(abspath $(EXEROOT)/atm/obj/mpas)
